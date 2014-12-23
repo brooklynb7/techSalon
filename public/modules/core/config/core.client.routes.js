@@ -16,6 +16,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 ])
 .run(function($rootScope, $location, Authentication) {
 	$rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) {
-		console.log(Authentication.isAuthenticated());
+		console.log(Authentication.user);
 	});
 });
