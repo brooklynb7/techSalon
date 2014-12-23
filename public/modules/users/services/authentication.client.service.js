@@ -5,10 +5,22 @@ angular.module('users').factory('Authentication', [
 	function() {
 		var _this = this;
 
-		_this._data = {
+		var authService = {
 			user: window.user
 		};
 
-		return _this._data;
+		authService.isAuthenticated = function() {
+			return !! authService.user._id;
+		};
+
+		authService.isAuthorized = function(authorizedRoles) {
+			if (!angular.isArray(authorizedRoles)) {
+				authorizedRoles = [authorizedRoles];
+			}
+			return (authService.isAuthenticated() &&
+				authorizedRoles.indexOf('s') !== -1);
+		};
+
+		return authService;
 	}
 ]);

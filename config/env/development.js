@@ -2,6 +2,10 @@
 
 module.exports = {
 	db: 'mongodb://localhost/techsalon-dev',
+	proxy:{
+		isNeeded: false,
+		url : 'http://proxy.tyo.sap.corp:8080'
+	},
 	app: {
 		title: 'TechSalon - Development Environment'
 	},

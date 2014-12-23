@@ -13,4 +13,9 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 			templateUrl: 'modules/core/views/home.client.view.html'
 		});
 	}
-]);
+])
+.run(function($rootScope, $location, Authentication) {
+	$rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) {
+		console.log(Authentication.isAuthenticated());
+	});
+});
