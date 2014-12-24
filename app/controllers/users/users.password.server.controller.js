@@ -210,7 +210,7 @@ exports.changePassword = function(req, res) {
 											res.status(400).send(err);
 										} else {
 											res.send({
-												message: 'Password changed successfully'
+												message: '密码修改成功'
 											});
 										}
 									});
@@ -218,28 +218,28 @@ exports.changePassword = function(req, res) {
 							});
 						} else {
 							res.status(400).send({
-								message: 'Passwords do not match'
+								message: '2次输入的新密码不一致'
 							});
 						}
 					} else {
 						res.status(400).send({
-							message: 'Current password is incorrect'
+							message: '当前密码不正确'
 						});
 					}
 				} else {
 					res.status(400).send({
-						message: 'User is not found'
+						message: '用户不存在'
 					});
 				}
 			});
 		} else {
 			res.status(400).send({
-				message: 'Please provide a new password'
+				message: '请填写新的密码'
 			});
 		}
 	} else {
 		res.status(400).send({
-			message: 'User is not signed in'
+			message: '请先登录'
 		});
 	}
 };
