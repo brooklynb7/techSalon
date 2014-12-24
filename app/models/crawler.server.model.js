@@ -16,6 +16,17 @@ var CrawlerSchema = new Schema({
 		required: 'Please fill Crawler name',
 		trim: true
 	},
+	mainPage:{
+		type: String,
+		default: '',
+		trim: true
+	},
+	segment: {
+		type: String,
+		unique: true,
+		default: '',
+		trim: true
+	},
 	created: {
 		type: Date,
 		default: Date.now

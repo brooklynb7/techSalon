@@ -1,9 +1,9 @@
 'use strict';
 
 //Menu service used for managing  menus
-angular.module('core').service('Menus', [
+angular.module('core').service('Menus', ['hasIntersectionFilter',
 
-	function() {
+	function(hasIntersectionFilter) {
 		// Define a set of default roles
 		this.defaultRoles = ['*'];
 
@@ -16,13 +16,7 @@ angular.module('core').service('Menus', [
 				if (!!~this.roles.indexOf('*')) {
 					return true;
 				} else {
-					for (var userRoleIndex in user.roles) {
-						for (var roleIndex in this.roles) {
-							if (this.roles[roleIndex] === user.roles[userRoleIndex]) {
-								return true;
-							}
-						}
-					}
+					return hasIntersectionFilter(user.roles, this.roles);
 				}
 			} else {
 				return this.isPublic;

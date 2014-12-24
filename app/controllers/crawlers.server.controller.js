@@ -6,7 +6,9 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Crawler = mongoose.model('Crawler'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	request = require('request'),
+	config = require('../../config/config');
 
 /**
  * Create a Crawler
@@ -84,6 +86,23 @@ exports.list = function(req, res) {
 	});
 };
 
+exports.fetch = function(req, res){
+	var crawler = req.crawler;
+	var requestOption = {
+		uri: crawler.mainPage,
+		method: 'GET'
+	};
+	if (config.proxy.isNeeded) {
+		requestOption.proxy = config.proxy.url;
+	}
+	request(requestOption, function(error, response, body) {
+		console.log(error);
+		console.log(response);
+		res.send(body);
+	});
+};
+
+
 /**
  * Crawler middleware
  */
@@ -100,7 +119,7 @@ exports.crawlerByID = function(req, res, next, id) {
  * Crawler authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.crawler.user.id !== req.user.id) {
+	if (req.crawler.user._id.toString() !== req.user._id.toString() && !_.contains(req.user.roles, 'super')) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();

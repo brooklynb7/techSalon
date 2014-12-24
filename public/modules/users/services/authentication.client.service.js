@@ -1,15 +1,15 @@
 'use strict';
 
 // Authentication service for user variables
-angular.module('users').factory('Authentication', [
-	function() {
+angular.module('users').factory('Authentication', ['hasIntersectionFilter',
+	function(hasIntersectionFilter) {
 		var _this = this;
 
 		var authService = {
 			user: window.user
 		};
 
-		authService.isAuthenticated = function() {
+		authService.isAuthenticated = function() {			
 			return !! authService.user._id;
 		};
 
@@ -18,7 +18,7 @@ angular.module('users').factory('Authentication', [
 				authorizedRoles = [authorizedRoles];
 			}
 			return (authService.isAuthenticated() &&
-				authorizedRoles.indexOf('s') !== -1);
+				hasIntersectionFilter(authorizedRoles, authService.user.roles));
 		};
 
 		return authService;

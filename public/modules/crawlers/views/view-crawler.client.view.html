@@ -1,8 +1,9 @@
 <section data-ng-controller="CrawlersController" data-ng-init="findOne()">
-	<div class="page-header">
+	<div class="page-header">		
 		<h1 data-ng-bind="crawler.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == crawler.user._id))">
+	<div class="pull-right" data-ng-show="( (authentication.user) && 
+			((authentication.user._id == crawler.user._id) || (authentication.user.roles|hasValue:userRoles.super)) )"> <!--  -->
 		<a class="btn btn-primary" href="/#!/crawlers/{{crawler._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
@@ -11,11 +12,17 @@
 		</a>
 	</div>
 	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="crawler.created | date:'mediumDate'"></span>
-			by
+		<em class="text-muted">			
+			<span data-ng-bind="crawler.created | date:'yyyy-MM-dd HH:mm:ss'"></span>
+			由
 			<span data-ng-bind="crawler.user.displayName"></span>
+			创建
 		</em>
 	</small>
+	<div>
+		<span>主页:</span><span data-ng-bind="crawler.mainPage"></span>
+	</div>
+	<div>
+		<span>标识:</span><a href='./crawlers/{{crawler._id}}/fetch' target='_blank' data-ng-bind="crawler.segment"></a>
+	</div>
 </section>

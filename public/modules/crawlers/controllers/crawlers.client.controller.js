@@ -9,7 +9,9 @@ angular.module('crawlers').controller('CrawlersController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Crawler object
 			var crawler = new Crawlers ({
-				name: this.name
+				name: this.name,
+				mainPage: this.mainPage,
+				segment: this.segment
 			});
 
 			// Redirect after save
@@ -18,6 +20,8 @@ angular.module('crawlers').controller('CrawlersController', ['$scope', '$statePa
 
 				// Clear form fields
 				$scope.name = '';
+				$scope.mainPage = '';
+				$scope.segment = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -25,7 +29,7 @@ angular.module('crawlers').controller('CrawlersController', ['$scope', '$statePa
 
 		// Remove existing Crawler
 		$scope.remove = function(crawler) {
-			if ( crawler ) { 
+			/*if ( crawler ) { 
 				crawler.$remove();
 
 				for (var i in $scope.crawlers) {
@@ -37,7 +41,7 @@ angular.module('crawlers').controller('CrawlersController', ['$scope', '$statePa
 				$scope.crawler.$remove(function() {
 					$location.path('crawlers');
 				});
-			}
+			}*/
 		};
 
 		// Update existing Crawler

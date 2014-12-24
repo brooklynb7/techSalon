@@ -14,6 +14,9 @@ module.exports = function(app) {
 		.put(users.requiresLogin, crawlers.hasAuthorization, crawlers.update)
 		.delete(users.requiresLogin, crawlers.hasAuthorization, crawlers.delete);
 
+	app.route('/crawlers/:crawlerId/fetch')
+		.get(users.requiresLogin, users.hasAuthorization(['admin']), crawlers.fetch);
+
 	// Finish by binding the Crawler middleware
 	app.param('crawlerId', crawlers.crawlerByID);
 };
