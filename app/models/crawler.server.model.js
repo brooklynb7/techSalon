@@ -16,7 +16,7 @@ var CrawlerSchema = new Schema({
 		required: 'Please fill Crawler name',
 		trim: true
 	},
-	mainPage:{
+	mainPage: {
 		type: String,
 		default: '',
 		trim: true
@@ -26,6 +26,11 @@ var CrawlerSchema = new Schema({
 		unique: true,
 		default: '',
 		trim: true
+	},
+	devStatus: {
+		type: Number,
+		enum: [1, 2, 3],
+		default: 1
 	},
 	created: {
 		type: Date,

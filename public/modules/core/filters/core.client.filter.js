@@ -24,4 +24,23 @@ angular.module('core').filter('hasIntersection', [
 			return false;
 		};
 	}
+]).filter('convertDevStatus', [
+	function() {
+		return function(status) {
+			var text = "";
+			switch (status) {
+				case 1:
+					text = "未开发";
+					break;
+				case 2:
+					text = "开发中";
+					break;
+				case 3:
+					text = "已开发";
+					break;
+				default:
+					break;
+			}
+		};
+	}
 ]);

@@ -3,7 +3,7 @@
 module.exports = {
 	db: 'mongodb://localhost/techsalon-dev',
 	proxy:{
-		isNeeded: true,
+		isNeeded: false,
 		url : 'http://proxy.tyo.sap.corp:8080'
 	},
 	app: {

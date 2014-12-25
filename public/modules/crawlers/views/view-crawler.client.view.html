@@ -25,4 +25,7 @@
 	<div>
 		<span>标识:</span><a href='./crawlers/{{crawler._id}}/fetch' target='_blank' data-ng-bind="crawler.segment"></a>
 	</div>
+	<div>
+		<span>开发状态:</span><span>{{crawler.devStatus|convertDevStatus}}</span>
+	</div>
 </section>

@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
 	Crawler = mongoose.model('Crawler'),
 	_ = require('lodash'),
 	request = require('request'),
+	cheerio = require('cheerio'),
 	config = require('../../config/config');
 
 /**
@@ -95,9 +96,8 @@ exports.fetch = function(req, res){
 	if (config.proxy.isNeeded) {
 		requestOption.proxy = config.proxy.url;
 	}
+	console.log(crawler.segment);
 	request(requestOption, function(error, response, body) {
-		console.log(error);
-		console.log(response);
 		res.send(body);
 	});
 };
