@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 	// Unified Watch Object
 	var watchFiles = {
 		serverViews: ['app/views/**/*.*'],
-		serverJS: ['gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js'],
+		serverJS: ['gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js', 'util/**/*.js'],
 		clientViews: ['public/modules/**/views/**/*.html'],
 		clientJS: ['public/js/*.js', 'public/modules/**/*.js'],
 		clientCSS: ['public/modules/**/*.css'],
@@ -121,11 +121,17 @@ module.exports = function(grunt) {
 			}
 		},
 		env: {
+			dev: {
+				NODE_ENV: 'development'
+			},
 			test: {
 				NODE_ENV: 'test'
 			},
 			secure: {
 				NODE_ENV: 'secure'
+			},
+			production: {
+				NODE_ENV: 'production'
 			}
 		},
 		mochaTest: {
@@ -138,6 +144,24 @@ module.exports = function(grunt) {
 		karma: {
 			unit: {
 				configFile: 'karma.conf.js'
+			}
+		},
+		forever: {
+			server: {
+				options: {
+					index: 'server.js',
+					logDir: 'logs',
+					logFile: 'out-server.log',
+					errFile: 'err-server.log'
+				}
+			},
+			'server-wechat-api': {
+				options: {
+					index: 'wechat-api/server.js',
+					logDir: 'logs',
+					logFile: 'out-wechat-api.log',
+					errFile: 'err-wechat-api.log'
+				}
 			}
 		}
 	});
@@ -156,6 +180,18 @@ module.exports = function(grunt) {
 		grunt.config.set('applicationJavaScriptFiles', config.assets.js);
 		grunt.config.set('applicationCSSFiles', config.assets.css);
 	});
+
+	//Production server task.
+	grunt.registerTask('production', ['env:production', 'build', 'stop', 'start']);
+
+	//Development server task
+	grunt.registerTask('dev', ['lint', 'stop', 'start']);
+
+	//Start all forever servers
+	grunt.registerTask('start', ['forever:server:start']);
+
+	//Stop all forever servers
+	grunt.registerTask('stop', ['forever:server:stop']);
 
 	// Default task(s).
 	grunt.registerTask('default', ['lint', 'concurrent:default']);

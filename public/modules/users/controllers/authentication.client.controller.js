@@ -8,6 +8,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		if ($scope.authentication.user) $location.path('/');
 
 		$scope.signup = function() {
+			$scope.showLoading(true);
 			$http.post('./auth/signup', $scope.credentials).success(function(response) {
 				// If successful we assign the response to the global user model
 				$scope.authentication.user = response;
@@ -16,10 +17,13 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$location.path('/');
 			}).error(function(response) {
 				$scope.error = response.message;
+			}).finally(function(){
+				$scope.showLoading(false);
 			});
 		};
 
 		$scope.signin = function() {
+			$scope.showLoading(true);
 			$http.post('./auth/signin', $scope.credentials).success(function(response) {
 				// If successful we assign the response to the global user model
 				$scope.authentication.user = response;
@@ -28,6 +32,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$location.path('/');
 			}).error(function(response) {
 				$scope.error = response.message;
+			}).finally(function(){
+				$scope.showLoading(false);
 			});
 		};
 	}

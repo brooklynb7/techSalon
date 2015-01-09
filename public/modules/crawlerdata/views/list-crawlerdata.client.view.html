@@ -1,0 +1,19 @@
+<section data-ng-controller="CrawlerdataController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Crawlerdata</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="crawlerdatum in crawlerdata" data-ng-href="#!/crawlerdata/{{crawlerdatum._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="crawlerdatum.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="crawlerdatum.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="crawlerdatum.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!crawlerdata.$resolved || crawlerdata.length">
+    	No Crawlerdata yet, why don't you <a href="/#!/crawlerdata/create">create one</a>?
+    </div>
+</section>

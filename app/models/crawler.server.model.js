@@ -21,6 +21,20 @@ var CrawlerSchema = new Schema({
 		default: '',
 		trim: true
 	},
+	fetched: {
+		type: [
+			{
+				type: String,
+				trim: true
+			}
+		],
+		default: []
+	},
+	current: {
+		type: String,
+		default: '',
+		trim: true
+	},
 	segment: {
 		type: String,
 		unique: true,

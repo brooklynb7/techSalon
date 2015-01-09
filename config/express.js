@@ -7,21 +7,20 @@ var fs = require('fs'),
 	http = require('http'),
 	https = require('https'),
 	express = require('express'),
-	morgan = require('morgan'),
-	bodyParser = require('body-parser'),
 	session = require('express-session'),
 	compress = require('compression'),
-	methodOverride = require('method-override'),
-	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
 	passport = require('passport'),
 	mongoStore = require('connect-mongo')({
 		session: session
 	}),
 	flash = require('connect-flash'),
+	path = require('path'),
+	logger = require('./logger'),
 	config = require('./config'),
-	consolidate = require('consolidate'),
-	path = require('path');
+	viewEngine = require('./view-engine'),
+	parser = require('./parser'),
+	errorHandler = require('./error-handler');
 
 module.exports = function(db) {
 	// Initialize express app
@@ -57,33 +56,9 @@ module.exports = function(db) {
 	// Showing stack errors
 	app.set('showStackError', true);
 
-	// Set swig as the template engine
-	app.engine('server.view.html', consolidate[config.templateEngine]);
+	viewEngine.set(app);
 
-	// Set views path and view engine
-	app.set('view engine', 'server.view.html');
-	app.set('views', './app/views');
-
-	// Environment dependent middleware
-	if (process.env.NODE_ENV === 'development') {
-		// Enable logger (morgan)
-		app.use(morgan('dev'));
-
-		// Disable views cache
-		app.set('view cache', false);
-	} else if (process.env.NODE_ENV === 'production') {
-		app.locals.cache = 'memory';
-	}
-
-	// Request body parsing middleware should be above methodOverride
-	app.use(bodyParser.urlencoded({
-		extended: true
-	}));
-	app.use(bodyParser.json());
-	app.use(methodOverride());
-
-	// CookieParser should be above session
-	app.use(cookieParser());
+	parser(app);
 
 	// Express MongoDB session storage
 	app.use(session({
@@ -113,32 +88,23 @@ module.exports = function(db) {
 	// Setting the app router and static folder
 	app.use(express.static(path.resolve('./public')));
 
+	// Environment dependent middleware
+	if (process.env.NODE_ENV === 'development') {
+		// Enable logger (logger)
+		//app.use(logger.dev);
+		app.use(logger.format2);
+		// Disable views cache
+		app.set('view cache', false);
+	} else if (process.env.NODE_ENV === 'production') {
+		app.locals.cache = 'memory';
+	}
+
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
 		require(path.resolve(routePath))(app);
 	});
-
-	// Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
-	app.use(function(err, req, res, next) {
-		// If the error object doesn't exists
-		if (!err) return next();
-
-		// Log it
-		console.error(err.stack);
-
-		// Error page
-		res.status(500).render('500', {
-			error: err.stack
-		});
-	});
-
-	// Assume 404 since no middleware responded
-	app.use(function(req, res) {
-		res.status(404).render('404', {
-			url: req.originalUrl,
-			error: 'Not Found'
-		});
-	});
+ 
+	errorHandler(app);
 
 	if (process.env.NODE_ENV === 'secure') {
 		// Log SSL usage
