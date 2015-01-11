@@ -14,8 +14,8 @@ module.exports = function(app) {
 		.put(users.requiresLogin, crawlers.hasAuthorization, crawlers.update)
 		.delete(users.requiresLogin, crawlers.hasAuthorization, crawlers.delete);
 
-	app.route('/crawlers/:crawlerId/fetch')
-		.get(users.requiresLogin, users.hasAuthorization(['admin']), crawlers.fetch);
+	app.route('/crawlers/:crawlerId/fetch/mainPage')
+		.get(users.requiresLogin, users.hasAuthorization(['admin']), crawlers.fetchMainPage);
 
 	/*app.route('/crawlers/:crawlerId/fetch/current')
 		.get(crawlers.)*/

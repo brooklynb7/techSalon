@@ -87,7 +87,7 @@ exports.list = function(req, res) {
 	});
 };
 
-exports.fetch = function(req, res){
+exports.fetchMainPage = function(req, res){
 	var crawler = req.crawler;
 	var requestOption = {
 		uri: crawler.mainPage,

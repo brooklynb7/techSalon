@@ -29,7 +29,7 @@ angular.module('crawlers').controller('CrawlersController', ['$scope', '$statePa
 
 		// Remove existing Crawler
 		$scope.remove = function(crawler) {
-			/*if ( crawler ) { 
+			if ( crawler ) { 
 				crawler.$remove();
 
 				for (var i in $scope.crawlers) {
@@ -41,7 +41,7 @@ angular.module('crawlers').controller('CrawlersController', ['$scope', '$statePa
 				$scope.crawler.$remove(function() {
 					$location.path('crawlers');
 				});
-			}*/
+			}
 		};
 
 		// Update existing Crawler
