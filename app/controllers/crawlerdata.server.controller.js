@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Crawlerdatum = mongoose.model('Crawlerdatum'),
+	cheerio = require('cheerio'),
 	_ = require('lodash');
 
 /**

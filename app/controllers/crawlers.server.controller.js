@@ -7,9 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Crawler = mongoose.model('Crawler'),
 	_ = require('lodash'),
-	request = require('request'),
-	cheerio = require('cheerio'),
-	config = require('../../config/config');
+	request = require('request');
 
 /**
  * Create a Crawler
@@ -87,22 +85,6 @@ exports.list = function(req, res) {
 	});
 };
 
-exports.fetchMainPage = function(req, res){
-	var crawler = req.crawler;
-	var requestOption = {
-		uri: crawler.mainPage,
-		method: 'GET'
-	};
-	if (config.proxy.isNeeded) {
-		requestOption.proxy = config.proxy.url;
-	}
-	console.log(crawler.segment);
-	request(requestOption, function(error, response, body) {
-		res.send(body);
-	});
-};
-
-
 /**
  * Crawler middleware
  */
@@ -125,3 +107,4 @@ exports.hasAuthorization = function(req, res, next) {
 	next();
 };
 
+_.extend(exports, require('./crawlers/crawlers.fetch.server.controller'));
