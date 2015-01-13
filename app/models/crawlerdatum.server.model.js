@@ -35,12 +35,16 @@ var CrawlerdatumSchema = new Schema({
 		default: '',
 		trim: true
 	},
-	time: {
+	datetime: {
+		type: Date,
+		default: null
+	},
+	location: {
 		type: String,
 		default: '',
 		trim: true
 	},
-	location: {
+	address: {
 		type: String,
 		default: '',
 		trim: true
